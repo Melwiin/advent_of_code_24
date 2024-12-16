@@ -72,6 +72,38 @@ void traverseNeighbourhood(const vector<string>& garden, const Vec2i& position, 
 int countCorners(const set<Vec2i>& points) {
     int cornerCount = 0;
 
+    vector<vector<Vec2i>> directionChecks = {
+      {{-1, 0}, {0, -1}, {-1, -1}}, // LEFT, UP, DIAG-UP-LEFT
+      {{0, -1}, {1, 0}, {1, -1}}, // RIGHT, UP, DIAG_RIGHT_UP
+      {{0, 1}, {1, 0}, {1, 1}},
+      {{0, 1}, {-1, 0}, {-1, 1}},
+    };
+
+    for (Vec2i point : points) {
+      for (auto dirs : directionChecks) {
+        Vec2i neighbor1 = point + dirs[0];
+        Vec2i neighbor2 = point + dirs[1];
+        Vec2i diagonalNeighbor = point + dirs[2];
+
+        //cout << neighbor1 << " " << neighbor2 << " " << diagonalNeighbor << endl;
+
+        if (points.find(neighbor1) == points.end() &&
+            points.find(neighbor2) == points.end() &&
+            points.find(diagonalNeighbor) == points.end()) {
+          cornerCount++;
+        }else if (points.find(neighbor1) != points.end() && 
+                  points.find(neighbor2) != points.end() && 
+                  points.find(diagonalNeighbor) == points.end()) {
+          cornerCount++;
+        }else if (points.find(neighbor1) == points.end() && 
+                  points.find(neighbor2) == points.end() && 
+                  points.find(diagonalNeighbor) != points.end()) {
+          cornerCount++;
+        }
+
+      }
+    }
+
     return cornerCount;
 }
 
@@ -126,18 +158,18 @@ int main() {
         garden.push_back(line);
     }
 
-    
-    
+
+
     auto s1p1 = std::chrono::high_resolution_clock::now();
     cout << "Solution Part 1: " << getSoluionPart1(garden) << endl;
     auto s2p1 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>( s2p1 - s1p1 ).count();
     cout << "Executed in " << duration << "ms" << endl;
-    
+
     auto s1p2 = std::chrono::high_resolution_clock::now();
     cout << "Solution Part 2: " << getSoluionPart2(garden) << endl;
     auto s2p2 = std::chrono::high_resolution_clock::now();
-    duration = std::chrono::duration_cast<std::chrono::milliseconds>( s2p1 - s1p2 ).count();
+    duration = std::chrono::duration_cast<std::chrono::milliseconds>( s2p2 - s1p2 ).count();
     cout << "Executed in " << duration << "ms" << endl;
 
     return 0;
