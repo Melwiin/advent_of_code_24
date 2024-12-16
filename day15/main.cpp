@@ -11,6 +11,7 @@
 
 using namespace std;
 
+
 const map<char, Vec2i> directions = {
   {'>', {1, 0}},
   {'<', {-1, 0}},
