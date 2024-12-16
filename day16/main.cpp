@@ -10,6 +10,7 @@
 #include "../shared/Timer.hpp"
 #include "../shared/Vec2i.hpp"
 
+
 using namespace std;
 
 int MAZE_WIDTH, MAZE_HEIGHT;
